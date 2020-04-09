@@ -1,0 +1,244 @@
+<html>
+    <head>
+       <title>TIC TAC TOE - Two Player</title>
+    </head>
+    <body>
+        <center>
+            <h2 id="ws"><br><br><br>Tic Tac Toe - Two Player</h2>
+            <form>
+                <table border="5px">
+                    <tr><td><button id="a1" onclick="xnz('a1')"></td>
+                        <td><button id="a2" onclick="xnz('a2')"></td>
+                        <td><button id="a3" onclick="xnz('a3')"></td></tr>
+                    <tr><td><button id="a4" onclick="xnz('a4')"></td>
+                        <td><button id="a5" onclick="xnz('a5')"></td>
+                        <td><button id="a6" onclick="xnz('a6')"></td></tr>
+                    <tr><td><button id="a7" onclick="xnz('a7')"></td>
+                        <td><button id="a8" onclick="xnz('a8')"></td>
+                        <td><button id="a9" onclick="xnz('a9')"></td></tr>
+                </table>
+                <b id="s"></b><br>
+               <input type="button" value="Play Again" id="reset" onClick="playAgain()">
+                <input type="button" id="change" value="Change Turn" onClick="changeTurn()">
+                <input disabled type="button" value="Undo" id="b" onClick="back()">
+                <table border="1px">
+                    <tr><th>X-wins</th>
+                        <th>0-wins</th>
+                        <th>Draw</th></tr>     
+                    <tr><th id="X">0</th>
+                        <th id="0">0</th>     
+                        <th id="draw">0</th></tr>
+                </table>
+            </form> 
+        </center>
+    <script>
+        var n=d=winX=win0=draw=0;
+        var winner=turn="";
+        var time=3000,i,temp;
+        s=document.getElementById('s')
+      ws=document.getElementById('ws')
+        
+        nextMove();
+        function xnz(ID)
+        {
+            turn=document.getElementById(ID)
+            turn.innerHTML=move;
+            turn.disabled=true;
+            n++;
+            d++;
+            if(d==1)
+            { 
+                document.getElementById('change').disabled=true;
+            }
+            document.getElementById('b').disabled=false;
+            nextMove();
+            checkWin();
+            record();
+        }
+        function nextMove()
+        {
+            if(n%2==0) 
+                move='X';
+            else
+                move='0';
+            s.innerHTML=" Turn - "+move+" ";
+        }     
+        function changeTurn()
+        {
+            n++;
+            nextMove();
+        }
+        function back()
+        {
+            turn.innerHTML="";
+            turn.disabled=false;
+            d--;
+            changeTurn();
+            document.getElementById('b').disabled=true;
+        }
+        function playAgain()
+        {
+            for(i=1;i<10;i++)
+            {
+                temp="a"+i;
+                temp=document.getElementById(temp);
+                temp.disabled=false;
+                temp.innerHTML="";
+            }
+            change.disabled=false;
+            s.innerHTML="";
+            ws.innerHTML="Tic Tac Toe - Two Player";
+            d=0;
+            winner="";
+            document.getElementById('b').disabled=true;
+            nextMove();
+        }
+        function checkWin()
+        {
+            if(d==9)
+            {
+                s.innerHTML="Draw";
+                winner="Draw";
+            }
+            if(a1.innerHTML!="")
+            {
+                if((a1.innerHTML==a2.innerHTML)&&(a2.innerHTML==a3.innerHTML))
+                {
+                    ws.innerHTML=a1.innerHTML+" -Wins";
+                    winner=a1.innerHTML;
+                    winCombo(a1,a2,a3);
+                }
+                else if((a1.innerHTML==a4.innerHTML)&&(a4.innerHTML==a7.innerHTML))
+                {
+                    ws.innerHTML=a1.innerHTML+" -Wins";
+                    winner=a1.innerHTML;
+                    winCombo(a1,a4,a7);
+                }
+            }
+            if(a5.innerHTML!="")
+            {
+                if((a4.innerHTML==a5.innerHTML)&&(a5.innerHTML==a6.innerHTML))
+                {
+                    ws.innerHTML=a5.innerHTML+" -Wins";
+                    winner=a5.innerHTML;
+                    winCombo(a4,a5,a6);
+                }
+                else if((a2.innerHTML==a5.innerHTML)&&(a5.innerHTML==a8.innerHTML))
+                {
+                    ws.innerHTML=a5.innerHTML+" -Wins";
+                    winner=a5.innerHTML;
+                    winCombo(a2,a5,a8);
+                }
+                else if((a1.innerHTML==a5.innerHTML)&&(a5.innerHTML==a9.innerHTML))
+                {
+                    ws.innerHTML=a5.innerHTML+" -Wins";
+                    winner=a5.innerHTML;
+                    winCombo(a1,a5,a9);
+                }
+                else if((a7.innerHTML==a5.innerHTML)&&(a5.innerHTML==a3.innerHTML))
+                {
+                    ws.innerHTML=a5.innerHTML+" -Wins"; 
+                    winner=a5.innerHTML;
+                    winCombo(a3,a5,a7);
+                }
+            } 
+            if(a9.innerHTML!="")
+            {
+                if((a3.innerHTML==a6.innerHTML)&&(a6.innerHTML==a9.innerHTML))
+                {
+                    ws.innerHTML=a9.innerHTML+" -Wins";
+                    winner=a9.innerHTML;
+                    winCombo(a3,a6,a9);
+                }
+                else if((a7.innerHTML==a8.innerHTML)&&(a8.innerHTML==a9.innerHTML))
+                {
+                    ws.innerHTML=a9.innerHTML+" -Wins";
+                    winner=a9.innerHTML;
+                    winCombo(a7,a8,a9);
+                }
+            }
+        }
+        function record()
+        {
+            if(winner=='X')
+            {
+                winX++;
+                document.getElementById('X').innerHTML=winX;
+                n++;
+            }
+            else if(winner=='0')
+            {
+                win0++;
+                n++;
+                document.getElementById('0').innerHTML=win0;
+            }
+            else if(winner=="Draw")
+            {
+                draw++;
+                document.getElementById('draw').innerHTML=draw;
+            }
+            if(winner!="")
+            {
+                if(winner=="Draw")
+                    ws.innerHTML="Draw"
+                gameOver();
+                setTimeout(playAgain,time);
+            }
+        }
+        function gameOver()
+        {
+            for(var i=1;i<10;i++)
+            {
+                var temp="a"+i;
+                temp=document.getElementById(temp);
+                temp.disabled=true;
+            }
+        }
+        function winCombo(w1,w2,w3)
+        {
+            w1.style.background="aquamarine";
+            w2.style.background="aquamarine";
+            w3.style.background="aquamarine";
+            w1.style.color="red";
+            w2.style.color="red";
+            w3.style.color="red";
+            ws.style.color="red";
+            s.innerHTML=ws.innerHTML;
+            resetColor(w1,w2,w3);
+        }
+        function resetColor(w1,w2,w3){setTimeout(function(){
+            w1.style.background="deepskyblue";
+            w2.style.background="deepskyblue";
+            w3.style.background="deepskyblue";
+            w1.style.color="black";
+            w2.style.color="black";
+            w3.style.color="black";
+            ws.style.color="blue"},time);}
+    </script>
+	<style>
+	body{background-color:white;align:middle;}
+            th{height:25px;width:75px;}
+            button
+            {
+                background-color:	deeppink;
+                height:100px;
+                width:100px;
+                color:black;
+                font-size:70px;
+                font-family:serif;
+                text-shadow:red 3px 3px 3px;
+                border:3px;
+            }
+            button:hover{background-color:deeppink;}
+            table,h2
+            {
+                background-color:#48C9B0 ;
+                border-color:black;
+                color:black;
+                text-shadow:yellow 3px 3px 3px;
+}
+#s{font-size:45px;color:olive;}
+
+</style>
+    </body>
+</html>
